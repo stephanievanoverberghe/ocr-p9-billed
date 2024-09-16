@@ -53,9 +53,7 @@ export const card = (bill) => {
 }
 
 export const cards = (bills) => {
-  const sortedBills = bills && bills.length ? [...bills].sort((a, b) => new Date(b.date) - new Date(a.date)) : [];
-
-  return sortedBills.map(bill => card(bill)).join("");
+  return bills && bills.length ? bills.map(bill => card(bill)).join("") : ""
 }
 
 export const getStatus = (index) => {
@@ -74,8 +72,6 @@ export default class {
     this.document = document
     this.onNavigate = onNavigate
     this.store = store
-    this.counter = 0;
-    this.currentIndex = null;
     $('#arrow-icon1').click((e) => this.handleShowTickets(e, bills, 1))
     $('#arrow-icon2').click((e) => this.handleShowTickets(e, bills, 2))
     $('#arrow-icon3').click((e) => this.handleShowTickets(e, bills, 3))
@@ -84,7 +80,7 @@ export default class {
 
   handleClickIconEye = () => {
     const billUrl = $('#icon-eye-d').attr("data-bill-url")
-    const imgWidth = Math.floor($('#modaleFileAdmin1').width() * 0.55)
+    const imgWidth = Math.floor($('#modaleFileAdmin1').width() * 0.8)
     $('#modaleFileAdmin1').find(".modal-body").html(`<div style='text-align: center;'><img width=${imgWidth} src=${billUrl} alt="Bill"/></div>`)
     if (typeof $('#modaleFileAdmin1').modal === 'function') $('#modaleFileAdmin1').modal('show')
   }
@@ -135,25 +131,27 @@ export default class {
   }
 
   handleShowTickets(e, bills, index) {
+    if (this.counter === undefined || this.index !== index) this.counter = 0
+    if (this.index === undefined || this.index !== index) this.index = index
     if (this.counter % 2 === 0) {
-      $(`#arrow-icon${index}`).css({ transform: 'rotate(0deg)' });
-      $(`#status-bills-container${index}`).html(cards(filteredBills(bills, getStatus(index))));
-      this.counter++;
-      this.currentIndex = index;
+      $(`#arrow-icon${this.index}`).css({ transform: 'rotate(0deg)' })
+      $(`#status-bills-container${this.index}`)
+        .html(cards(filteredBills(bills, getStatus(this.index))))
+      this.counter++
     } else {
-      $(`#arrow-icon${index}`).css({ transform: 'rotate(90deg)' });
-      $(`#status-bills-container${index}`).html("");
-      this.counter++;
-      this.currentIndex = null;
+      $(`#arrow-icon${this.index}`).css({ transform: 'rotate(90deg)' })
+      $(`#status-bills-container${this.index}`)
+        .html("")
+      this.counter++
     }
 
     bills.forEach(bill => {
-      $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills));
-    });
+      $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills))
+    })
 
-    return bills;
+    return bills
+
   }
-
 
   getBillsAllUsers = () => {
     if (this.store) {

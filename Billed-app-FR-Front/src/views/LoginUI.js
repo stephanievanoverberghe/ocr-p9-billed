@@ -1,7 +1,7 @@
 
 export default () => {
 
-  return (`
+  return(`
       <div class="page-div">
         <div class="row">
           <div class="title-container"> 
@@ -45,3 +45,4 @@ export default () => {
       </div>
   `)
 }
+  

@@ -18,15 +18,11 @@ export default class NewBill {
   handleChangeFile = e => {
     e.preventDefault();
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0];
-    const filePath = e.target.value.split(/\\/g);
-    const fileName = filePath[filePath.length - 1];
-
-    // Vérifier l'extension du fichier
-    const validExtensions = ["jpg", "jpeg", "png"];
+    const fileName = file.name;
     const fileExtension = fileName.split('.').pop().toLowerCase();
+    const validExtensions = ["jpg", "jpeg", "png"];
 
     if (!validExtensions.includes(fileExtension)) {
-      // Afficher un message d'erreur ou empêcher la soumission
       alert("Veuillez télécharger un fichier au format jpg, jpeg ou png.");
       e.target.value = "";
       return;
@@ -46,12 +42,12 @@ export default class NewBill {
         }
       })
       .then(({ fileUrl, key }) => {
-        console.log(fileUrl);
         this.billId = key;
         this.fileUrl = fileUrl;
         this.fileName = fileName;
-      }).catch(error => console.error(error));
-  }
+      })
+      .catch(error => console.error(error));
+  };
 
   handleSubmit = e => {
     e.preventDefault()
