@@ -51,9 +51,6 @@ describe("Given I am connected as an employee", () => {
     });
   });
 
-
-
-
   describe("When I upload a file with a valid format", () => {
     test("Then the file should be accepted", async () => {
       const html = NewBillUI();
@@ -71,6 +68,25 @@ describe("Given I am connected as an employee", () => {
       expect(handleChangeFile).toHaveBeenCalled();
       expect(fileInput.files[0].name).toBe("test.jpg");
     });
+  });
+});
+
+describe("When I upload a file with an invalid format", () => {
+  test("Then an alert should be shown and the file input should be cleared", () => {
+    const html = NewBillUI();
+    document.body.innerHTML = html;
+
+    const newBill = new NewBill({ document, onNavigate: jest.fn(), store: mockStore, localStorage: window.localStorage });
+    const fileInput = screen.getByTestId("file");
+
+    const handleChangeFile = jest.fn((e) => newBill.handleChangeFile(e));
+    fileInput.addEventListener("change", handleChangeFile);
+
+    const testFile = new File(["test"], "test.pdf", { type: "application/pdf" });
+    fireEvent.change(fileInput, { target: { files: [testFile] } });
+
+    expect(handleChangeFile).toHaveBeenCalled();
+    expect(fileInput.value).toBe("");
   });
 });
 
