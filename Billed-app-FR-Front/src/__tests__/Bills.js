@@ -11,9 +11,11 @@ import BillsUI from "../views/BillsUI.js";
 import { bills } from "../fixtures/bills.js";
 import router from "../app/Router.js";
 
+// Mocking the store for API simulation
 jest.mock("../app/store", () => mockStore);
 
 describe("Given I am connected as an employee", () => {
+
   describe("When I am on Bills Page", () => {
     beforeEach(() => {
       Object.defineProperty(window, "localStorage", {
