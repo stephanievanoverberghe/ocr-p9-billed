@@ -15,7 +15,6 @@ import router from "../app/Router.js";
 jest.mock("../app/store", () => mockStore);
 
 describe("Given I am connected as an employee", () => {
-
   describe("When I am on Bills Page", () => {
     beforeEach(() => {
       Object.defineProperty(window, "localStorage", {
